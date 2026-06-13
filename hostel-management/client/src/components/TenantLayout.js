@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import {
   Box, AppBar, Toolbar, Typography, IconButton, Avatar, Menu,
-<<<<<<< HEAD
   MenuItem, Divider, BottomNavigation, BottomNavigationAction, Paper, ListItemIcon,
 } from '@mui/material';
 import MeetingRoomIcon    from '@mui/icons-material/MeetingRoom';
@@ -11,15 +10,6 @@ import ReportProblemIcon  from '@mui/icons-material/ReportProblem';
 import CampaignIcon       from '@mui/icons-material/Campaign';
 import LogoutIcon         from '@mui/icons-material/Logout';
 import PersonIcon         from '@mui/icons-material/Person';
-=======
-  MenuItem, Divider, BottomNavigation, BottomNavigationAction, Paper,
-} from '@mui/material';
-import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
-import PaymentIcon from '@mui/icons-material/Payment';
-import ReportProblemIcon from '@mui/icons-material/ReportProblem';
-import CampaignIcon from '@mui/icons-material/Campaign';
-import LogoutIcon from '@mui/icons-material/Logout';
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
 import useAuth from '../hooks/useAuth';
 
 const navItems = [
@@ -57,7 +47,6 @@ const TenantLayout = () => {
               </Box>
             </MenuItem>
             <Divider />
-<<<<<<< HEAD
             <MenuItem onClick={() => { setAnchorEl(null); navigate('/tenant/profile'); }}>
               <ListItemIcon><PersonIcon fontSize="small" /></ListItemIcon>
               My Profile
@@ -65,10 +54,6 @@ const TenantLayout = () => {
             <MenuItem onClick={() => { logout(); navigate('/login'); }}>
               <ListItemIcon><LogoutIcon fontSize="small" /></ListItemIcon>
               Logout
-=======
-            <MenuItem onClick={() => { logout(); navigate('/login'); }}>
-              <LogoutIcon fontSize="small" sx={{ mr: 1 }} /> Logout
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
             </MenuItem>
           </Menu>
         </Toolbar>

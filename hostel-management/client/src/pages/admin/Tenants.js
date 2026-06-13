@@ -3,7 +3,6 @@ import {
   Box, Typography, Button, Card, Table, TableBody, TableCell, TableContainer,
   TableHead, TableRow, Chip, IconButton, Dialog, DialogTitle, DialogContent,
   DialogActions, TextField, MenuItem, Select, FormControl, InputLabel,
-<<<<<<< HEAD
   Alert, CircularProgress, Avatar, Tooltip, Divider,
 } from '@mui/material';
 import AddIcon        from '@mui/icons-material/Add';
@@ -51,36 +50,11 @@ const Tenants = () => {
       return filled < cap;
     });
     setAvailable(notFull);
-=======
-  Alert, CircularProgress, Avatar, Tooltip,
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import PersonOffIcon from '@mui/icons-material/PersonOff';
-import api from '../../api/axios';
-
-const EMPTY_FORM = { name: '', email: '', password: '', phone: '', address: '', emergencyContact: '', roomId: '' };
-
-const Tenants = () => {
-  const [tenants, setTenants] = useState([]);
-  const [vacantRooms, setVacantRooms] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [dialog, setDialog] = useState(false);
-  const [form, setForm] = useState(EMPTY_FORM);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
-  const [deactivateId, setDeactivateId] = useState(null);
-
-  const fetchData = useCallback(async () => {
-    const [t, r] = await Promise.all([api.get('/tenants'), api.get('/rooms?status=vacant')]);
-    setTenants(t.data);
-    setVacantRooms(r.data);
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
     setLoading(false);
   }, []);
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
-<<<<<<< HEAD
   // sort: active first, inactive at the bottom
   const sorted = [...tenants].sort((a, b) => {
     if (a.isActive === b.isActive) return 0;
@@ -132,51 +106,25 @@ const Tenants = () => {
   };
 
   /* ── Deactivate ── */
-=======
-  const handleAdd = async () => {
-    setError('');
-    setSaving(true);
-    try {
-      await api.post('/tenants', form);
-      setDialog(false);
-      setForm(EMPTY_FORM);
-      fetchData();
-    } catch (err) { setError(err.response?.data?.message || 'Failed to add tenant'); }
-    finally { setSaving(false); }
-  };
-
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
   const handleDeactivate = async () => {
     try { await api.patch(`/tenants/${deactivateId}/deactivate`); setDeactivateId(null); fetchData(); }
     catch (err) { alert(err.response?.data?.message || 'Failed to deactivate'); }
   };
 
-<<<<<<< HEAD
   // rooms eligible for the room-change picker: not full, and not the tenant's current room
   const roomsForPicker = availableRooms.filter(r => r._id !== editTarget?.room?._id);
 
   if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}><CircularProgress /></Box>;
   const active = tenants.filter(t => t.isActive).length;
-=======
-  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}><CircularProgress /></Box>;
-
-  const activeTenants = tenants.filter(t => t.isActive);
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
 
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Box>
           <Typography variant="h4">Tenants</Typography>
-<<<<<<< HEAD
           <Typography variant="body2" color="text.secondary">{active} active · {tenants.length - active} inactive</Typography>
         </Box>
         <Button variant="contained" startIcon={<AddIcon />} onClick={() => { setAddForm(EMPTY_ADD); setAddError(''); setAddDialog(true); }}>
-=======
-          <Typography variant="body2" color="text.secondary">{activeTenants.length} active tenants</Typography>
-        </Box>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={() => { setForm(EMPTY_FORM); setError(''); setDialog(true); }}>
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
           Add Tenant
         </Button>
       </Box>
@@ -192,19 +140,11 @@ const Tenants = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-<<<<<<< HEAD
               {sorted.map(t => (
                 <TableRow key={t._id} hover sx={{ opacity: t.isActive ? 1 : 0.5 }}>
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                       <Avatar sx={{ width: 32, height: 32, bgcolor: t.isActive ? 'primary.main' : 'action.disabled', fontSize: 13 }}>
-=======
-              {tenants.map(t => (
-                <TableRow key={t._id} hover>
-                  <TableCell>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                      <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main', fontSize: 13 }}>
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
                         {t.user?.name?.charAt(0)}
                       </Avatar>
                       <Box>
@@ -213,36 +153,24 @@ const Tenants = () => {
                       </Box>
                     </Box>
                   </TableCell>
-<<<<<<< HEAD
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                       <Typography variant="body2" fontWeight={600}>#{t.room?.roomNumber}</Typography>
                       <Chip label={t.room?.type === 'double' ? '2-bed' : '1-bed'} size="small" sx={{ fontSize: 10, height: 18 }} />
                     </Box>
                   </TableCell>
-=======
-                  <TableCell>Room #{t.room?.roomNumber}</TableCell>
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
                   <TableCell>{t.phone}</TableCell>
                   <TableCell>{new Date(t.joinDate).toLocaleDateString('en-IN')}</TableCell>
                   <TableCell>
                     <Chip label={t.isActive ? 'Active' : 'Inactive'} size="small" color={t.isActive ? 'success' : 'default'} />
                   </TableCell>
                   <TableCell>
-<<<<<<< HEAD
                     <Tooltip title="Edit tenant">
                       <IconButton size="small" color="primary" onClick={() => openEdit(t)}><EditIcon fontSize="small" /></IconButton>
                     </Tooltip>
                     {t.isActive && (
                       <Tooltip title="Vacate tenant">
                         <IconButton size="small" color="warning" onClick={() => setDeactivateId(t._id)}><PersonOffIcon fontSize="small" /></IconButton>
-=======
-                    {t.isActive && (
-                      <Tooltip title="Vacate tenant">
-                        <IconButton size="small" color="warning" onClick={() => setDeactivateId(t._id)}>
-                          <PersonOffIcon fontSize="small" />
-                        </IconButton>
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
                       </Tooltip>
                     )}
                   </TableCell>
@@ -253,7 +181,6 @@ const Tenants = () => {
         </TableContainer>
       </Card>
 
-<<<<<<< HEAD
       {/* ── Add Tenant ── */}
       <Dialog open={addDialog} onClose={() => setAddDialog(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Add New Tenant</DialogTitle>
@@ -278,34 +205,11 @@ const Tenants = () => {
                     </MenuItem>
                   );
                 })}
-=======
-      {/* Add Tenant Dialog */}
-      <Dialog open={dialog} onClose={() => setDialog(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Add New Tenant</DialogTitle>
-        <DialogContent sx={{ pt: 2 }}>
-          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
-            <TextField label="Full Name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} required />
-            <TextField label="Email" type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} required />
-            <TextField label="Password (default: hostel@123)" value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} />
-            <TextField label="Phone" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} required />
-            <TextField label="Address" value={form.address} onChange={e => setForm(f => ({ ...f, address: e.target.value }))} />
-            <TextField label="Emergency Contact" value={form.emergencyContact} onChange={e => setForm(f => ({ ...f, emergencyContact: e.target.value }))} />
-            <FormControl required>
-              <InputLabel>Assign Room</InputLabel>
-              <Select value={form.roomId} label="Assign Room" onChange={e => setForm(f => ({ ...f, roomId: e.target.value }))}>
-                {vacantRooms.map(r => (
-                  <MenuItem key={r._id} value={r._id}>
-                    Room #{r.roomNumber} — {r.type}, {r.isAC ? 'AC' : 'Non-AC'}, ₹{r.monthlyRent}/mo
-                  </MenuItem>
-                ))}
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
               </Select>
             </FormControl>
           </Box>
         </DialogContent>
         <DialogActions sx={{ p: 2 }}>
-<<<<<<< HEAD
           <Button onClick={() => setAddDialog(false)}>Cancel</Button>
           <Button variant="contained" onClick={handleAdd} disabled={addSaving}>{addSaving ? 'Adding...' : 'Add Tenant'}</Button>
         </DialogActions>
@@ -376,17 +280,6 @@ const Tenants = () => {
       <Dialog open={Boolean(deactivateId)} onClose={() => setDeactivateId(null)}>
         <DialogTitle>Vacate Tenant?</DialogTitle>
         <DialogContent><Typography>Tenant will be marked inactive and their bed freed.</Typography></DialogContent>
-=======
-          <Button onClick={() => setDialog(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleAdd} disabled={saving}>{saving ? 'Adding...' : 'Add Tenant'}</Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Deactivate Confirm */}
-      <Dialog open={Boolean(deactivateId)} onClose={() => setDeactivateId(null)}>
-        <DialogTitle>Vacate Tenant?</DialogTitle>
-        <DialogContent><Typography>This will mark the tenant as inactive and free up their room.</Typography></DialogContent>
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
         <DialogActions sx={{ p: 2 }}>
           <Button onClick={() => setDeactivateId(null)}>Cancel</Button>
           <Button variant="contained" color="warning" onClick={handleDeactivate}>Confirm</Button>

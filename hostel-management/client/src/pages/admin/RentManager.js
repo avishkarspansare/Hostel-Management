@@ -3,27 +3,19 @@ import {
   Box, Typography, Button, Card, Table, TableBody, TableCell, TableContainer,
   TableHead, TableRow, Chip, IconButton, Dialog, DialogTitle, DialogContent,
   DialogActions, TextField, Alert, CircularProgress, Tooltip, MenuItem, Select,
-<<<<<<< HEAD
   FormControl, InputLabel, Tabs, Tab,
-=======
-  FormControl, InputLabel,
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
 } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import AddIcon from '@mui/icons-material/Add';
-<<<<<<< HEAD
 import PeopleIcon from '@mui/icons-material/People';
 import PersonIcon from '@mui/icons-material/Person';
-=======
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
 import api from '../../api/axios';
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 const RentManager = () => {
   const [records, setRecords] = useState([]);
-<<<<<<< HEAD
   const [activeTenants, setActiveTenants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState({ status: '', month: '', year: new Date().getFullYear() });
@@ -46,14 +38,6 @@ const RentManager = () => {
   });
   const [singleMsg, setSingleMsg] = useState({ text: '', severity: 'info' });
   const [singleGenerating, setSingleGenerating] = useState(false);
-=======
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState({ status: '', month: '', year: new Date().getFullYear() });
-  const [genDialog, setGenDialog] = useState(false);
-  const [genForm, setGenForm] = useState({ month: new Date().getMonth() + 1, year: new Date().getFullYear() });
-  const [genMsg, setGenMsg] = useState('');
-  const [generating, setGenerating] = useState(false);
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
 
   const fetchRecords = useCallback(async () => {
     setLoading(true);
@@ -67,7 +51,6 @@ const RentManager = () => {
     } finally { setLoading(false); }
   }, [filter]);
 
-<<<<<<< HEAD
   const fetchActiveTenants = useCallback(async () => {
     const { data } = await api.get('/tenants?isActive=true');
     setActiveTenants(data);
@@ -85,9 +68,6 @@ const RentManager = () => {
       amount: tenant?.room?.monthlyRent?.toString() || '',
     }));
   };
-=======
-  useEffect(() => { fetchRecords(); }, [fetchRecords]);
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
 
   const toggleStatus = async (record) => {
     const endpoint = record.status === 'paid' ? `/rent/${record._id}/unpay` : `/rent/${record._id}/pay`;
@@ -95,7 +75,6 @@ const RentManager = () => {
     fetchRecords();
   };
 
-<<<<<<< HEAD
   const openGenDialog = () => {
     setAllMsg({ text: '', severity: 'info' });
     setSingleMsg({ text: '', severity: 'info' });
@@ -132,16 +111,6 @@ const RentManager = () => {
     } catch (err) {
       setSingleMsg({ text: err.response?.data?.message || 'Error creating record', severity: 'error' });
     } finally { setSingleGenerating(false); }
-=======
-  const handleGenerate = async () => {
-    setGenerating(true); setGenMsg('');
-    try {
-      const { data } = await api.post('/rent', genForm);
-      setGenMsg(data.message);
-      fetchRecords();
-    } catch (err) { setGenMsg(err.response?.data?.message || 'Error'); }
-    finally { setGenerating(false); }
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
   };
 
   return (
@@ -151,21 +120,13 @@ const RentManager = () => {
           <Typography variant="h4">Rent Manager</Typography>
           <Typography variant="body2" color="text.secondary">{records.length} records</Typography>
         </Box>
-<<<<<<< HEAD
         <Button variant="contained" startIcon={<AddIcon />} onClick={openGenDialog}>
-=======
-        <Button variant="contained" startIcon={<AddIcon />} onClick={() => { setGenMsg(''); setGenDialog(true); }}>
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
           Generate Records
         </Button>
       </Box>
 
       {/* Filters */}
-<<<<<<< HEAD
       <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap' }}>
-=======
-      <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
         <FormControl size="small" sx={{ minWidth: 140 }}>
           <InputLabel>Status</InputLabel>
           <Select value={filter.status} label="Status" onChange={e => setFilter(f => ({ ...f, status: e.target.value }))}>
@@ -222,7 +183,6 @@ const RentManager = () => {
         </Card>
       )}
 
-<<<<<<< HEAD
       {/* ── Generate Records Dialog ── */}
       <Dialog open={genDialog} onClose={() => setGenDialog(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Generate Rent Records</DialogTitle>
@@ -310,32 +270,6 @@ const RentManager = () => {
               {singleGenerating ? 'Creating...' : 'Create Record'}
             </Button>
           )}
-=======
-      {/* Generate Records Dialog */}
-      <Dialog open={genDialog} onClose={() => setGenDialog(false)} maxWidth="xs" fullWidth>
-        <DialogTitle>Generate Rent Records</DialogTitle>
-        <DialogContent sx={{ pt: 2 }}>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Creates unpaid rent records for all active tenants for the selected month.
-          </Typography>
-          {genMsg && <Alert severity="info" sx={{ mb: 2 }}>{genMsg}</Alert>}
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <FormControl fullWidth>
-              <InputLabel>Month</InputLabel>
-              <Select value={genForm.month} label="Month" onChange={e => setGenForm(f => ({ ...f, month: e.target.value }))}>
-                {MONTHS.map((m, i) => <MenuItem key={m} value={i + 1}>{m}</MenuItem>)}
-              </Select>
-            </FormControl>
-            <TextField label="Year" type="number" value={genForm.year}
-              onChange={e => setGenForm(f => ({ ...f, year: e.target.value }))} sx={{ width: 110 }} />
-          </Box>
-        </DialogContent>
-        <DialogActions sx={{ p: 2 }}>
-          <Button onClick={() => setGenDialog(false)}>Close</Button>
-          <Button variant="contained" onClick={handleGenerate} disabled={generating}>
-            {generating ? 'Generating...' : 'Generate'}
-          </Button>
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
         </DialogActions>
       </Dialog>
     </Box>
