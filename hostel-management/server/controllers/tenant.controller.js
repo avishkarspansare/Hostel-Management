@@ -1,5 +1,4 @@
 const Tenant = require('../models/Tenant');
-<<<<<<< HEAD
 const User   = require('../models/User');
 const Room   = require('../models/Room');
 
@@ -22,12 +21,6 @@ async function syncRoomStatus(room) {
 }
 
 // ── controllers ──────────────────────────────────────────────────────────────
-=======
-const User = require('../models/User');
-const Room = require('../models/Room');
-
-const populate = [{ path: 'user', select: 'name email role' }, { path: 'room', select: 'roomNumber type isAC floor monthlyRent' }];
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
 
 const getTenants = async (req, res, next) => {
   try {
@@ -46,43 +39,26 @@ const getTenantById = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-<<<<<<< HEAD
-=======
-// Admin creates tenant: creates User + Tenant + assigns Room
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
 const createTenant = async (req, res, next) => {
   try {
     const { name, email, password, phone, address, emergencyContact, roomId, joinDate } = req.body;
 
     const room = await Room.findById(roomId);
     if (!room) return res.status(404).json({ message: 'Room not found' });
-<<<<<<< HEAD
 
     // Check bed availability
     if (room.tenants.length >= room.capacity) {
       return res.status(400).json({ message: `Room #${room.roomNumber} is full (${room.capacity}-bed)` });
     }
-=======
-    if (room.status === 'occupied') return res.status(400).json({ message: 'Room is already occupied' });
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
 
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(409).json({ message: 'Email already registered' });
 
-<<<<<<< HEAD
     const user   = await User.create({ name, email, password: password || 'hostel@123', role: 'tenant' });
     const tenant = await Tenant.create({ user: user._id, room: roomId, phone, address, emergencyContact, joinDate });
 
     room.tenants.push(tenant._id);
     await syncRoomStatus(room);
-=======
-    const user = await User.create({ name, email, password: password || 'hostel@123', role: 'tenant' });
-    const tenant = await Tenant.create({ user: user._id, room: roomId, phone, address, emergencyContact, joinDate });
-
-    room.status = 'occupied';
-    room.currentTenant = tenant._id;
-    await room.save();
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
 
     const result = await Tenant.findById(tenant._id).populate(populate);
     res.status(201).json(result);
@@ -91,7 +67,6 @@ const createTenant = async (req, res, next) => {
 
 const updateTenant = async (req, res, next) => {
   try {
-<<<<<<< HEAD
     const { name, email, phone, address, emergencyContact } = req.body;
 
     const tenant = await Tenant.findById(req.params.id);
@@ -179,15 +154,6 @@ const changeTenantRoom = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-=======
-    const tenant = await Tenant.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true }).populate(populate);
-    if (!tenant) return res.status(404).json({ message: 'Tenant not found' });
-    res.json(tenant);
-  } catch (err) { next(err); }
-};
-
-// Deactivate (vacate) tenant
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
 const deactivateTenant = async (req, res, next) => {
   try {
     const tenant = await Tenant.findById(req.params.id);
@@ -196,7 +162,6 @@ const deactivateTenant = async (req, res, next) => {
     tenant.isActive = false;
     await tenant.save();
 
-<<<<<<< HEAD
     // Remove from room's tenants array
     const room = await Room.findById(tenant.room);
     if (room) {
@@ -208,16 +173,6 @@ const deactivateTenant = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-=======
-    const room = await Room.findById(tenant.room);
-    if (room) { room.status = 'vacant'; room.currentTenant = null; await room.save(); }
-
-    res.json({ message: 'Tenant deactivated and room vacated' });
-  } catch (err) { next(err); }
-};
-
-// GET /api/tenants/me — tenant's own profile
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
 const getMyProfile = async (req, res, next) => {
   try {
     const tenant = await Tenant.findOne({ user: req.user._id }).populate(populate);
@@ -226,13 +181,9 @@ const getMyProfile = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-<<<<<<< HEAD
 module.exports = {
   getTenants, getTenantById, createTenant,
   updateTenant, updateMyProfile,
   changeTenantRoom, deactivateTenant,
   getMyProfile,
 };
-=======
-module.exports = { getTenants, getTenantById, createTenant, updateTenant, deactivateTenant, getMyProfile };
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b

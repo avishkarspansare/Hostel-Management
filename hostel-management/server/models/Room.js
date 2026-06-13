@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const roomSchema = new mongoose.Schema({
-<<<<<<< HEAD
   roomNumber:   { type: String, required: true, unique: true, trim: true },
   type:         { type: String, enum: ['single', 'double'], required: true },
   capacity:     { type: Number, default: 1 },          // 1 for single, 2 for double
@@ -26,15 +25,4 @@ roomSchema.pre('save', function (next) {
   next();
 });
 
-=======
-  roomNumber: { type: String, required: true, unique: true, trim: true },
-  type: { type: String, enum: ['single', 'double'], required: true },
-  isAC: { type: Boolean, default: false },
-  floor: { type: Number, required: true },
-  monthlyRent: { type: Number, required: true },
-  status: { type: String, enum: ['vacant', 'occupied'], default: 'vacant' },
-  currentTenant: { type: mongoose.Schema.Types.ObjectId, ref: 'Tenant', default: null },
-}, { timestamps: true });
-
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
 module.exports = mongoose.model('Room', roomSchema);

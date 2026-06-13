@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const Room   = require('../models/Room');
 const Tenant = require('../models/Tenant');
 
@@ -39,27 +38,13 @@ const getRooms = async (req, res, next) => {
     if (req.query.status) filter.status = req.query.status;
     if (req.query.type)   filter.type   = req.query.type;
     const rooms = await Room.find(filter).populate(tenantPop);
-=======
-const Room = require('../models/Room');
-
-const getRooms = async (req, res, next) => {
-  try {
-    const filter = {};
-    if (req.query.status) filter.status = req.query.status;
-    if (req.query.type) filter.type = req.query.type;
-    const rooms = await Room.find(filter).populate('currentTenant', 'phone').populate({ path: 'currentTenant', populate: { path: 'user', select: 'name email' } });
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
     res.json(rooms);
   } catch (err) { next(err); }
 };
 
 const getRoomById = async (req, res, next) => {
   try {
-<<<<<<< HEAD
     const room = await Room.findById(req.params.id).populate(tenantPop);
-=======
-    const room = await Room.findById(req.params.id).populate({ path: 'currentTenant', populate: { path: 'user', select: 'name email' } });
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
     if (!room) return res.status(404).json({ message: 'Room not found' });
     res.json(room);
   } catch (err) { next(err); }
@@ -67,20 +52,15 @@ const getRoomById = async (req, res, next) => {
 
 const createRoom = async (req, res, next) => {
   try {
-<<<<<<< HEAD
     const { roomNumber, type, isAC, floor, monthlyRent } = req.body;
     const room = new Room({ roomNumber, type, isAC, floor, monthlyRent });
     await room.save();
-=======
-    const room = await Room.create(req.body);
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
     res.status(201).json(room);
   } catch (err) { next(err); }
 };
 
 const updateRoom = async (req, res, next) => {
   try {
-<<<<<<< HEAD
     const { roomNumber, type, isAC, floor, monthlyRent } = req.body;
     const room = await Room.findById(req.params.id);
     if (!room) return res.status(404).json({ message: 'Room not found' });
@@ -97,10 +77,6 @@ const updateRoom = async (req, res, next) => {
 
     await room.save();
     await room.populate(tenantPop);
-=======
-    const room = await Room.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-    if (!room) return res.status(404).json({ message: 'Room not found' });
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
     res.json(room);
   } catch (err) { next(err); }
 };
@@ -109,11 +85,7 @@ const deleteRoom = async (req, res, next) => {
   try {
     const room = await Room.findById(req.params.id);
     if (!room) return res.status(404).json({ message: 'Room not found' });
-<<<<<<< HEAD
     if (room.tenants.length > 0) return res.status(400).json({ message: 'Cannot delete an occupied room' });
-=======
-    if (room.status === 'occupied') return res.status(400).json({ message: 'Cannot delete an occupied room' });
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
     await room.deleteOne();
     res.json({ message: 'Room deleted' });
   } catch (err) { next(err); }

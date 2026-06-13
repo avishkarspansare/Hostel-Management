@@ -34,7 +34,6 @@ const createRentRecords = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-<<<<<<< HEAD
 // Admin: create a single rent record for one specific tenant
 const createSingleRentRecord = async (req, res, next) => {
   try {
@@ -64,8 +63,6 @@ const createSingleRentRecord = async (req, res, next) => {
   }
 };
 
-=======
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
 // Admin: mark rent as paid
 const markAsPaid = async (req, res, next) => {
   try {
@@ -118,8 +115,4 @@ const getRentSummary = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-<<<<<<< HEAD
 module.exports = { getAllRent, createRentRecords, createSingleRentRecord, markAsPaid, markAsUnpaid, getMyRent, getRentSummary };
-=======
-module.exports = { getAllRent, createRentRecords, markAsPaid, markAsUnpaid, getMyRent, getRentSummary };
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b

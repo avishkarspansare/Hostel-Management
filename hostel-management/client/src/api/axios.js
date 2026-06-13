@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const API_URL = 'https://hostel-management1.onrender.com/api' || 'http://localhost:5000/api';
+const API_URL = 'http://localhost:5000/api';
 
-api = axios.create({ baseURL: API_URL });
+const api = axios.create({ baseURL: API_URL });
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
