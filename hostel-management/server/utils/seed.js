@@ -23,36 +23,31 @@ const seed = async () => {
   // Rooms
   const roomsData = [
     { roomNumber: '101', type: 'single', isAC: false, floor: 1, monthlyRent: 5000 },
-    { roomNumber: '102', type: 'single', isAC: true,  floor: 1, monthlyRent: 6000 },
+    { roomNumber: '102', type: 'single', isAC: true, floor: 1, monthlyRent: 6000 },
     { roomNumber: '103', type: 'double', isAC: false, floor: 1, monthlyRent: 4000 },
-    { roomNumber: '201', type: 'double', isAC: true,  floor: 2, monthlyRent: 7000 },
+    { roomNumber: '201', type: 'double', isAC: true, floor: 2, monthlyRent: 7000 },
     { roomNumber: '202', type: 'single', isAC: false, floor: 2, monthlyRent: 5000 },
-    { roomNumber: '203', type: 'single', isAC: true,  floor: 2, monthlyRent: 6500 },
-    { roomNumber: '301', type: 'double', isAC: true,  floor: 3, monthlyRent: 8000 },
+    { roomNumber: '203', type: 'single', isAC: true, floor: 2, monthlyRent: 6500 },
+    { roomNumber: '301', type: 'double', isAC: true, floor: 3, monthlyRent: 8000 },
     { roomNumber: '302', type: 'single', isAC: false, floor: 3, monthlyRent: 5000 },
   ];
   const rooms = await Room.insertMany(roomsData);
 
   // Tenants (creates users too)
   const tenantProfiles = [
-    { name: 'Ravi Kumar',    email: 'ravi@example.com',    phone: '9876543210', address: 'Pune, MH',     room: rooms[0] },
-    { name: 'Priya Sharma',  email: 'priya@example.com',   phone: '9876543211', address: 'Mumbai, MH',   room: rooms[1] },
-    { name: 'Aarav Mehta',   email: 'aarav@example.com',   phone: '9876543212', address: 'Nashik, MH',   room: rooms[2] },
-    { name: 'Sneha Patil',   email: 'sneha@example.com',   phone: '9876543213', address: 'Nagpur, MH',   room: rooms[3] },
-    { name: 'Karan Singh',   email: 'karan@example.com',   phone: '9876543214', address: 'Delhi, DL',    room: rooms[4] },
+    { name: 'Avishkar Pansare', email: 'avi@example.com', phone: '8149382809', address: 'Pune, MH', room: rooms[0] },
+    { name: 'Priya Sharma', email: 'priya@example.com', phone: '9876543211', address: 'Mumbai, MH', room: rooms[1] },
+    { name: 'Aarav Mehta', email: 'aarav@example.com', phone: '9876543212', address: 'Nashik, MH', room: rooms[2] },
+    { name: 'Sneha Patil', email: 'sneha@example.com', phone: '9876543213', address: 'Nagpur, MH', room: rooms[3] },
+    { name: 'Karan Singh', email: 'karan@example.com', phone: '9876543214', address: 'Delhi, DL', room: rooms[4] },
   ];
 
   const tenants = [];
   for (const tp of tenantProfiles) {
     const user = await User.create({ name: tp.name, email: tp.email, password: 'tenant@123', role: 'tenant' });
     const tenant = await Tenant.create({ user: user._id, room: tp.room._id, phone: tp.phone, address: tp.address, emergencyContact: '9000000000' });
-<<<<<<< HEAD
     // Push into tenants[] — pre-save hook recalculates capacity/status automatically
     tp.room.tenants.push(tenant._id);
-=======
-    tp.room.status = 'occupied';
-    tp.room.currentTenant = tenant._id;
->>>>>>> d61fee6a42e4e5bd62def9e14e836c4c40be724b
     await tp.room.save();
     tenants.push(tenant);
   }
@@ -90,7 +85,7 @@ const seed = async () => {
 
   console.log('\n✅ Seed completed!');
   console.log('Admin login  → admin@hostel.com / admin123');
-  console.log('Tenant login → ravi@example.com / tenant@123');
+  console.log('Tenant login → avi@example.com / tenant@123');
   console.log('             → priya@example.com / tenant@123');
   console.log('             → aarav@example.com / tenant@123');
   process.exit(0);
