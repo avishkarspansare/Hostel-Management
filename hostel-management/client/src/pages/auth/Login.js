@@ -99,7 +99,7 @@ const Login = () => {
                 Admin → admin@hostel.com / admin123
               </Typography>
               <Typography variant="caption" color="text.secondary" display="block">
-                Tenant → ravi@example.com / tenant@123
+                Tenant → avi@example.com / tenant@123
               </Typography>
             </Box>
           </CardContent>
