@@ -216,7 +216,7 @@ npm run dev
 | Role   | Email                 | Password    |
 |--------|-----------------------|-------------|
 | Admin  | admin@hostel.com      | admin123    |
-| Tenant | ravi@example.com      | tenant@123  |
+| Tenant | avi@example.com      | tenant@123  |
 | Tenant | priya@example.com     | tenant@123  |
 | Tenant | aarav@example.com     | tenant@123  |
 | Tenant | sneha@example.com     | tenant@123  |
